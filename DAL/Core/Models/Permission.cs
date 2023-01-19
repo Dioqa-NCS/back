@@ -11,5 +11,7 @@ public class Permission : Entity<int>, IModel<int>
 
     public string Name { get; set; }
 
+    public string Description { get; set; }
+
     public ICollection<Compte> UserCollection { get; set; }
 }

@@ -5,17 +5,34 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace DAL.Migrations
 {
     [DbContext(typeof(NCSContext))]
-    partial class NcsContextModelSnapshot : ModelSnapshot
+    partial class NCSContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.17");
+                .HasAnnotation("ProductVersion", "6.0.13")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("ComptePermission", b =>
+                {
+                    b.Property<int>("PermissionCollectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserCollectionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PermissionCollectionId", "UserCollectionId");
+
+                    b.HasIndex("UserCollectionId");
+
+                    b.ToTable("ComptePermission");
+                });
 
             modelBuilder.Entity("DAL.Core.Models.Adresse", b =>
                 {
@@ -92,7 +109,7 @@ namespace DAL.Migrations
 
                     b.HasIndex(new[] { "IdCompte" }, "idCompte");
 
-                    b.ToTable("adresse");
+                    b.ToTable("adresse", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Adressetransport", b =>
@@ -164,7 +181,170 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("adressetransport");
+                    b.ToTable("adressetransport", (string)null);
+                });
+
+            modelBuilder.Entity("DAL.Core.Models.Compte", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AdresseFacturation")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)")
+                        .HasColumnName("adresseFacturation");
+
+                    b.Property<string>("CodePostalFacturation")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("codePostalFacturation");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("EstValider")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(1)
+                        .HasColumnType("char(1)")
+                        .HasColumnName("estValider")
+                        .HasDefaultValueSql("'0'")
+                        .IsFixedLength();
+
+                    b.Property<int>("IdRoleCompte")
+                        .HasColumnType("int")
+                        .HasColumnName("idRoleCompte");
+
+                    b.Property<int>("IdTypeEntreprise")
+                        .HasColumnType("int")
+                        .HasColumnName("idTypeEntreprise");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Mail")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("mail");
+
+                    b.Property<string>("MailFacturation")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("mailFacturation");
+
+                    b.Property<string>("Mdp")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)")
+                        .HasColumnName("mdp");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("nom");
+
+                    b.Property<string>("NomEntreprise")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)")
+                        .HasColumnName("nomEntreprise");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Prenom")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("prenom");
+
+                    b.Property<int?>("ReductionPrix")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("reductionPrix")
+                        .HasDefaultValueSql("'0'");
+
+                    b.Property<string>("RefreshToken")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("refreshToken");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Tel")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("tel");
+
+                    b.Property<string>("TelFacturation")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("telFacturation");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("VilleFacturation")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)")
+                        .HasColumnName("villeFacturation");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex(new[] { "IdRoleCompte" }, "idRoleCompte");
+
+                    b.HasIndex(new[] { "IdTypeEntreprise" }, "idTypeEntreprise");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Marque", b =>
@@ -182,7 +362,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("marque");
+                    b.ToTable("marque", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Permission", b =>
@@ -191,8 +371,11 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -214,7 +397,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("rolecompte");
+                    b.ToTable("rolecompte", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Servicesupplementaire", b =>
@@ -236,7 +419,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("servicesupplementaire");
+                    b.ToTable("servicesupplementaire", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Servicesupplementairetransport", b =>
@@ -262,7 +445,7 @@ namespace DAL.Migrations
                     b.HasKey("IdTransport", "IdSupplement")
                         .HasName("PRIMARY");
 
-                    b.ToTable("servicesupplementairetransport");
+                    b.ToTable("servicesupplementairetransport", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Statuttransport", b =>
@@ -277,7 +460,7 @@ namespace DAL.Migrations
                         .HasMaxLength(7)
                         .HasColumnType("char(7)")
                         .HasColumnName("couleurHex")
-                        .IsFixedLength(true);
+                        .IsFixedLength();
 
                     b.Property<string>("Nom")
                         .IsRequired()
@@ -287,7 +470,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("statuttransport");
+                    b.ToTable("statuttransport", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Tarif", b =>
@@ -315,7 +498,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tarif");
+                    b.ToTable("tarif", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Ticket", b =>
@@ -373,7 +556,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ticket");
+                    b.ToTable("ticket", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Transport", b =>
@@ -418,6 +601,7 @@ namespace DAL.Migrations
                         .HasColumnName("idCompte");
 
                     b.Property<int?>("IdStatutTransport")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("idStatutTransport")
                         .HasDefaultValueSql("'1'");
@@ -461,7 +645,7 @@ namespace DAL.Migrations
 
                     b.HasIndex(new[] { "IdVehiculeReprise" }, "idVehiculeReprise");
 
-                    b.ToTable("transport");
+                    b.ToTable("transport", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Typeentreprise", b =>
@@ -479,7 +663,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("typeentreprise");
+                    b.ToTable("typeentreprise", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Typemoteur", b =>
@@ -497,7 +681,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("typemoteur");
+                    b.ToTable("typemoteur", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Typevehicule", b =>
@@ -522,172 +706,11 @@ namespace DAL.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("char(1)")
                         .HasColumnName("nom")
-                        .IsFixedLength(true);
+                        .IsFixedLength();
 
                     b.HasKey("Id");
 
-                    b.ToTable("typevehicule");
-                });
-
-            modelBuilder.Entity("DAL.Core.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AdresseFacturation")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)")
-                        .HasColumnName("adresseFacturation");
-
-                    b.Property<string>("CodePostalFacturation")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("codePostalFacturation");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("EstValider")
-                        .HasMaxLength(1)
-                        .HasColumnType("char(1)")
-                        .HasColumnName("estValider")
-                        .HasDefaultValueSql("'0'")
-                        .IsFixedLength(true);
-
-                    b.Property<int>("IdRoleCompte")
-                        .HasColumnType("int")
-                        .HasColumnName("idRoleCompte");
-
-                    b.Property<int>("IdTypeEntreprise")
-                        .HasColumnType("int")
-                        .HasColumnName("idTypeEntreprise");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp");
-
-                    b.Property<string>("Mail")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("mail");
-
-                    b.Property<string>("MailFacturation")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("mailFacturation");
-
-                    b.Property<string>("Mdp")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)")
-                        .HasColumnName("mdp");
-
-                    b.Property<string>("Nom")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)")
-                        .HasColumnName("nom");
-
-                    b.Property<string>("NomEntreprise")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)")
-                        .HasColumnName("nomEntreprise");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Prenom")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("prenom");
-
-                    b.Property<int?>("ReductionPrix")
-                        .HasColumnType("int")
-                        .HasColumnName("reductionPrix")
-                        .HasDefaultValueSql("'0'");
-
-                    b.Property<string>("RefreshToken")
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("refreshToken");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Tel")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("tel");
-
-                    b.Property<string>("TelFacturation")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("telFacturation");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<string>("VilleFacturation")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)")
-                        .HasColumnName("villeFacturation");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.HasIndex(new[] { "IdRoleCompte" }, "idRoleCompte");
-
-                    b.HasIndex(new[] { "IdTypeEntreprise" }, "idTypeEntreprise");
-
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("typevehicule", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Vehicule", b =>
@@ -731,7 +754,7 @@ namespace DAL.Migrations
                         .HasMaxLength(8)
                         .HasColumnType("char(8)")
                         .HasColumnName("numeroVIN")
-                        .IsFixedLength(true);
+                        .IsFixedLength();
 
                     b.Property<string>("PlaqueImatriculation")
                         .IsRequired()
@@ -748,7 +771,7 @@ namespace DAL.Migrations
 
                     b.HasIndex(new[] { "IdTypeVehicule" }, "idTypeVehicule");
 
-                    b.ToTable("vehicule");
+                    b.ToTable("vehicule", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -759,7 +782,7 @@ namespace DAL.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -775,7 +798,7 @@ namespace DAL.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("AspNetRoles");
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -785,10 +808,10 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
@@ -797,7 +820,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
@@ -807,10 +830,10 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -819,7 +842,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims");
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
@@ -833,7 +856,7 @@ namespace DAL.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -842,7 +865,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins");
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
@@ -858,7 +881,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles");
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -875,37 +898,56 @@ namespace DAL.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens");
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PermissionUser", b =>
+            modelBuilder.Entity("ComptePermission", b =>
                 {
-                    b.Property<int>("PermissionCollectionId")
-                        .HasColumnType("int");
+                    b.HasOne("DAL.Core.Models.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionCollectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("UserCollectionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PermissionCollectionId", "UserCollectionId");
-
-                    b.HasIndex("UserCollectionId");
-
-                    b.ToTable("PermissionUser");
+                    b.HasOne("DAL.Core.Models.Compte", null)
+                        .WithMany()
+                        .HasForeignKey("UserCollectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Adresse", b =>
                 {
-                    b.HasOne("DAL.Core.Models.User", "Compte")
+                    b.HasOne("DAL.Core.Models.Compte", "Compte")
                         .WithMany("Adresses")
                         .HasForeignKey("IdCompte")
-                        .HasConstraintName("adresse_ibfk_1")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("adresse_ibfk_1");
 
                     b.Navigation("Compte");
+                });
+
+            modelBuilder.Entity("DAL.Core.Models.Compte", b =>
+                {
+                    b.HasOne("DAL.Core.Models.Rolecompte", "IdRoleCompteNavigation")
+                        .WithMany("Comptes")
+                        .HasForeignKey("IdRoleCompte")
+                        .IsRequired()
+                        .HasConstraintName("compte_ibfk_1");
+
+                    b.HasOne("DAL.Core.Models.Typeentreprise", "TypeEntreprise")
+                        .WithMany("Comptes")
+                        .HasForeignKey("IdTypeEntreprise")
+                        .IsRequired()
+                        .HasConstraintName("compte_ibfk_2");
+
+                    b.Navigation("IdRoleCompteNavigation");
+
+                    b.Navigation("TypeEntreprise");
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Servicesupplementairetransport", b =>
@@ -913,9 +955,9 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Core.Models.Transport", "IdTransportNavigation")
                         .WithMany("Servicesupplementairetransports")
                         .HasForeignKey("IdTransport")
-                        .HasConstraintName("serviceSupplementaireTransport_ibfk_1")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("serviceSupplementaireTransport_ibfk_1");
 
                     b.Navigation("IdTransportNavigation");
                 });
@@ -925,21 +967,21 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Core.Models.Adressetransport", "IdAdresseDebutNavigation")
                         .WithMany("TransportIdAdresseDebutNavigations")
                         .HasForeignKey("IdAdresseDebut")
-                        .HasConstraintName("transport_ibfk_5")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("transport_ibfk_5");
 
                     b.HasOne("DAL.Core.Models.Adressetransport", "IdAdresseFinNavigation")
                         .WithMany("TransportIdAdresseFinNavigations")
                         .HasForeignKey("IdAdresseFin")
-                        .HasConstraintName("transport_ibfk_6")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("transport_ibfk_6");
 
-                    b.HasOne("DAL.Core.Models.User", "IdCompteNavigation")
+                    b.HasOne("DAL.Core.Models.Compte", "IdCompteNavigation")
                         .WithMany("Transports")
                         .HasForeignKey("IdCompte")
-                        .HasConstraintName("transport_ibfk_1")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("transport_ibfk_1");
 
                     b.HasOne("DAL.Core.Models.Statuttransport", "IdStatutTransportNavigation")
                         .WithMany("Transports")
@@ -969,45 +1011,26 @@ namespace DAL.Migrations
                     b.Navigation("IdVehiculeRepriseNavigation");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.User", b =>
-                {
-                    b.HasOne("DAL.Core.Models.Rolecompte", "IdRoleCompteNavigation")
-                        .WithMany("Comptes")
-                        .HasForeignKey("IdRoleCompte")
-                        .HasConstraintName("compte_ibfk_1")
-                        .IsRequired();
-
-                    b.HasOne("DAL.Core.Models.Typeentreprise", "IdTypeEntrepriseNavigation")
-                        .WithMany("Comptes")
-                        .HasForeignKey("IdTypeEntreprise")
-                        .HasConstraintName("compte_ibfk_2")
-                        .IsRequired();
-
-                    b.Navigation("IdRoleCompteNavigation");
-
-                    b.Navigation("IdTypeEntrepriseNavigation");
-                });
-
             modelBuilder.Entity("DAL.Core.Models.Vehicule", b =>
                 {
-                    b.HasOne("DAL.Core.Models.User", "IdCompteNavigation")
+                    b.HasOne("DAL.Core.Models.Compte", "IdCompteNavigation")
                         .WithMany("Vehicules")
                         .HasForeignKey("IdCompte")
-                        .HasConstraintName("vehicule_ibfk_3")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("vehicule_ibfk_3");
 
                     b.HasOne("DAL.Core.Models.Typemoteur", "IdTypeMoteurNavigation")
                         .WithMany("Vehicules")
                         .HasForeignKey("IdTypeMoteur")
-                        .HasConstraintName("vehicule_ibfk_2")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("vehicule_ibfk_2");
 
                     b.HasOne("DAL.Core.Models.Typevehicule", "IdTypeVehiculeNavigation")
                         .WithMany("Vehicules")
                         .HasForeignKey("IdTypeVehicule")
-                        .HasConstraintName("vehicule_ibfk_1")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("vehicule_ibfk_1");
 
                     b.Navigation("IdCompteNavigation");
 
@@ -1027,7 +1050,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("DAL.Core.Models.User", null)
+                    b.HasOne("DAL.Core.Models.Compte", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1036,7 +1059,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("DAL.Core.Models.User", null)
+                    b.HasOne("DAL.Core.Models.Compte", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1051,7 +1074,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Core.Models.User", null)
+                    b.HasOne("DAL.Core.Models.Compte", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1060,24 +1083,9 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("DAL.Core.Models.User", null)
+                    b.HasOne("DAL.Core.Models.Compte", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("PermissionUser", b =>
-                {
-                    b.HasOne("DAL.Core.Models.Permission", null)
-                        .WithMany()
-                        .HasForeignKey("PermissionCollectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Core.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserCollectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1087,6 +1095,15 @@ namespace DAL.Migrations
                     b.Navigation("TransportIdAdresseDebutNavigations");
 
                     b.Navigation("TransportIdAdresseFinNavigations");
+                });
+
+            modelBuilder.Entity("DAL.Core.Models.Compte", b =>
+                {
+                    b.Navigation("Adresses");
+
+                    b.Navigation("Transports");
+
+                    b.Navigation("Vehicules");
                 });
 
             modelBuilder.Entity("DAL.Core.Models.Rolecompte", b =>
@@ -1116,15 +1133,6 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Core.Models.Typevehicule", b =>
                 {
-                    b.Navigation("Vehicules");
-                });
-
-            modelBuilder.Entity("DAL.Core.Models.User", b =>
-                {
-                    b.Navigation("Adresses");
-
-                    b.Navigation("Transports");
-
                     b.Navigation("Vehicules");
                 });
 

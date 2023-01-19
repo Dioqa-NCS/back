@@ -32,7 +32,9 @@ public static class AppModule
 
 
         builder.Services.AddDbContext<NCSContext>(options =>
-            options.UseMySql(builder.Configuration.GetConnectionString("Default"), new MySqlServerVersion(new Version()), x => x.MigrationsAssembly("DAL")));
+            options.UseMySql(builder.Configuration.GetConnectionString("Default"), new MySqlServerVersion(new Version()), x => x.MigrationsAssembly("")));
+
+
 
         builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 

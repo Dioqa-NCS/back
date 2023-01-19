@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL;
 
-public partial class DBContext : IdentityDbContext<Compte, IdentityRole<int>, int>
+public partial class Context : IdentityDbContext<Compte, IdentityRole<int>, int>
 {
-    public DBContext()
+    public Context()
     {
     }
 
-    public DBContext( DbContextOptions<NCSContext> options)
+    public Context( DbContextOptions<NCSContext> options)
         : base(options)
     {
     }
@@ -33,6 +33,15 @@ public partial class DBContext : IdentityDbContext<Compte, IdentityRole<int>, in
     public virtual DbSet<Typevehicule> Typevehicules { get; set; }
     public virtual DbSet<Vehicule> Vehicules { get; set; }
     public DbSet<Permission> Permissions { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if(!optionsBuilder.IsConfigured)
+        {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+            optionsBuilder.UseMySql("server=localhost;port=3306;user=root;database=ncs;", new MySqlServerVersion(new Version()));
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

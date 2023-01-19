@@ -1,9 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DAL;
-public class NCSContext : DBContext
+public class NCSContext : Context
 {
-    public NCSContext( DbContextOptions<NCSContext> options ) : base( options ) { }
+    public NCSContext()
+    {
+
+    }
+
+    public NCSContext(DbContextOptions<NCSContext> options) : base(options) { }
 
 
     public override int SaveChanges()
@@ -11,30 +17,30 @@ public class NCSContext : DBContext
         return base.SaveChanges();
     }
 
-    public override Task<int> SaveChangesAsync( bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default )
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         var entries = ChangeTracker.Entries();
-        foreach (var entry in entries)
+        foreach(var entry in entries)
         {
-            if (entry.State == EntityState.Modified)
+            if(entry.State == EntityState.Modified)
             {
-                entry.References.ToList().ForEach( foreignKeyProperty =>
+                entry.References.ToList().ForEach(foreignKeyProperty =>
                 {
                     var fkValue = foreignKeyProperty.CurrentValue;
                     var propertyName = foreignKeyProperty.Metadata.Name;
 
-                    if (fkValue == null)
+                    if(fkValue == null)
                     {
-                        entry.Reference( propertyName ).IsModified = false;
+                        entry.Reference(propertyName).IsModified = false;
                     }
 
-                    if (fkValue != null)
+                    if(fkValue != null)
                     {
-                        if (int.TryParse( fkValue.ToString(), out var value ))
+                        if(int.TryParse(fkValue.ToString(), out var value))
                         {
-                            if (value == 0)
+                            if(value == 0)
                             {
-                                entry.Reference( propertyName ).IsModified = false;
+                                entry.Reference(propertyName).IsModified = false;
                             }
                         }
                     }
@@ -43,6 +49,6 @@ public class NCSContext : DBContext
             }
         }
 
-        return base.SaveChangesAsync( acceptAllChangesOnSuccess, cancellationToken );
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
 }
