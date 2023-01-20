@@ -31,7 +31,7 @@ public static class AuthModule
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
                 options.Cookie.SameSite = SameSiteMode.None;
-                options.ExpireTimeSpan = TimeSpan.FromDays(int.Parse(Environment.GetEnvironmentVariable("JWTSETTINGS_EXPIRY")));
+                options.ExpireTimeSpan = TimeSpan.FromDays(int.Parse(Environment.GetEnvironmentVariable("COOKIE_EXPIRY")));
                 options.SlidingExpiration = true;
                 options.Cookie.HttpOnly = true;
                 options.Events.OnRedirectToLogin = context =>

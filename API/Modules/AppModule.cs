@@ -35,7 +35,7 @@ public static class AppModule
 
         builder.Services.AddDbContext<NCSContext>(options =>
             options.UseMySql(
-                "ssssssssss", 
+                Environment.GetEnvironmentVariable("DATABASE_CONNECTION"), 
                 new MySqlServerVersion(new Version()), 
                 x => x.MigrationsAssembly("DAL")
                 )
