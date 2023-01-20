@@ -1,7 +1,18 @@
 {
   "profiles": {
-    "DAL": {
-      "commandName": "Project"
+    "Developement": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DATABASE_CONNECTION": "server=localhost;port=3306;user=root;database=ncs;"
+      }
+    },
+    "Production": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "DATABASE_CONNECTION": "server=bef4oahbww6ootvomeaw-mysql.services.clever-cloud.com;port=3306;pwd=RgUEHpzjVM8Q7OxXFsx1;user=unq6tuny3kxylule;database=bef4oahbww6ootvomeaw;"
+      }
     },
     "Docker": {
       "commandName": "Docker"

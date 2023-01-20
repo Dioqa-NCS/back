@@ -2,7 +2,6 @@
 using API.Modules.Auth;
 using API.Modules.Comptes;
 using API.Modules.Shared;
-using API.Modules.Shared.Configuration;
 using API.Modules.Swagger;
 using API.Modules.Typeentreprises;
 using DAL;
@@ -32,11 +31,13 @@ public static class AppModule
 
 
         builder.Services.AddDbContext<NCSContext>(options =>
-            options.UseMySql(builder.Configuration.GetConnectionString("Default"), new MySqlServerVersion(new Version()), x => x.MigrationsAssembly("")));
+            options.UseMySql(
+                Environment.GetEnvironmentVariable("DATABASE_CONNECTION"), 
+                new MySqlServerVersion(new Version()), 
+                x => x.MigrationsAssembly("DAL")
+                )
+            );
 
-
-
-        builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
         builder.RegisterSwaggerModule();
 
@@ -55,7 +56,7 @@ public static class AppModule
 
     public static WebApplication RegisterHttpPipeline(this WebApplication app)
     {
-        if(!app.Environment.IsDevelopment())
+        if(app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler();
             

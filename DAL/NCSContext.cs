@@ -6,10 +6,18 @@ public class NCSContext : Context
 {
     public NCSContext()
     {
-
     }
 
     public NCSContext(DbContextOptions<NCSContext> options) : base(options) { }
+
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if(!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseMySql("server=bef4oahbww6ootvomeaw-mysql.services.clever-cloud.com;port=3306;pwd=RgUEHpzjVM8Q7OxXFsx1;user=unq6tuny3kxylule;database=bef4oahbww6ootvomeaw;", new MySqlServerVersion(new Version()));
+        }
+    }
 
 
     public override int SaveChanges()

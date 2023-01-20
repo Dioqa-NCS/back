@@ -1,26 +1,17 @@
-﻿using API.Modules.Shared.Configuration;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.Extensions.Options;
 using MimeKit;
 
 namespace API.Modules.Shared;
 
 public class MailService : IMailService
-{
-    private readonly MailSettings mailSettings;
-
-    public MailService(IOptions<MailSettings> mailSettings)
-    {
-        this.mailSettings = mailSettings.Value;
-    }
-
+{                                                
     public async Task SendEmailAsync(string toEmail, string subject, string body, List<IFormFile>? attachments = null)
     {
         try
         {
             MimeMessage email = new();
-            email.Sender = MailboxAddress.Parse(mailSettings.Mail);
+            email.Sender = MailboxAddress.Parse(Environment.GetEnvironmentVariable("SMTP_MAIL"));
             email.To.Add(MailboxAddress.Parse(toEmail));
             email.Subject = subject;
             BodyBuilder builder = new();
@@ -46,8 +37,8 @@ public class MailService : IMailService
             email.Body = builder.ToMessageBody();
 
             SmtpClient smtp = new();
-            await smtp.ConnectAsync(this.mailSettings.Host, this.mailSettings.Port, SecureSocketOptions.StartTls);
-            smtp.Authenticate(this.mailSettings.Mail, this.mailSettings.Password);
+            await smtp.ConnectAsync(Environment.GetEnvironmentVariable("SMTP_HOST"), int.Parse("SMTP_PORT"), SecureSocketOptions.StartTls);
+            smtp.Authenticate(Environment.GetEnvironmentVariable("SMTP_MAIL"), Environment.GetEnvironmentVariable("SMTP_PASSWORD"));
 
             await smtp.SendAsync(email);
 

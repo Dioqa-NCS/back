@@ -1,6 +1,5 @@
 ﻿using API.Modules.Auth.Endpoints;
 using API.Modules.Auth.Ressources;
-using API.Modules.Auth.Settings;
 using API.Modules.Auth.Validators;
 using DAL;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -12,10 +11,7 @@ public static class AuthModule
 {
     public static WebApplicationBuilder RegisterAuthModule(this WebApplicationBuilder builder)
     {
-
-        builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSettings"));
-
-        var jwtSettings = builder.Configuration.GetSection("JWTSettings").Get<JWTSettings>();
+        var ddd = builder.Configuration.GetSection("JWTSETTINGS");
 
 
         builder.Services.AddIdentity<Compte, IdentityRole<int>>()
@@ -35,7 +31,7 @@ public static class AuthModule
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
                 options.Cookie.SameSite = SameSiteMode.None;
-                options.ExpireTimeSpan = TimeSpan.FromDays(jwtSettings.Expiry);
+                options.ExpireTimeSpan = TimeSpan.FromDays(int.Parse(Environment.GetEnvironmentVariable("JWTSETTINGS_EXPIRY")));
                 options.SlidingExpiration = true;
                 options.Cookie.HttpOnly = true;
                 options.Events.OnRedirectToLogin = context =>
@@ -49,10 +45,10 @@ public static class AuthModule
             .AddAuthorizationBuilder()
             .AddPolicy(AuthPolicies.Admin, policy =>
                    policy
-                        .RequireRole("Administrateur"))
+                        .RequireRole(AuthRole.Admin))
             .AddPolicy(AuthPolicies.Customer, policy => 
                    policy
-                        .RequireRole("Client"));
+                        .RequireRole(AuthRole.Customer));
 
         builder.Services.AddTransient<IAuthService, AuthService>();
         builder.Services.AddValidatorsFromAssemblyContaining<SignupRequestValidator>(ServiceLifetime.Transient);
@@ -60,7 +56,7 @@ public static class AuthModule
 
         builder.Services.AddCors(options => options.AddPolicy(name: AuthPolicies.CORS,
         policy => policy
-           .WithOrigins("http://localhost:4200")
+           .WithOrigins(Environment.GetEnvironmentVariable("CORS_DOMAINS"))
            .SetIsOriginAllowedToAllowWildcardSubdomains()
            .AllowAnyHeader()
            .AllowCredentials()

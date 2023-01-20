@@ -1,29 +1,24 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using API.Modules.Auth.Ressources;
 using System.IdentityModel.Tokens.Jwt;
-using API.Modules.Auth.Settings;
 
 namespace API.Modules.Auth;
 
 public class AuthService : IAuthService
 {
     private readonly SignInManager<Compte> _signInManager;
-    private readonly JWTSettings _jWTSetting;
     private readonly HttpContext _httpContext;
 
 
     public AuthService(
         SignInManager<Compte> signInManager,
-        IOptionsSnapshot<JWTSettings> jWTSetting,
         IHttpContextAccessor httpContextAccessor)
 
     {
         _signInManager = signInManager;
-        _jWTSetting = jWTSetting.Value;
         _httpContext = httpContextAccessor.HttpContext;
     }
 
@@ -88,7 +83,7 @@ public class AuthService : IAuthService
             {
                 IsPersistent = true,
                 AllowRefresh = true,
-                ExpiresUtc = DateTime.Now.AddDays(Convert.ToDouble(this._jWTSetting.Expiry)),
+                ExpiresUtc = DateTime.Now.AddDays(Convert.ToDouble(Environment.GetEnvironmentVariable("COOKIE_EXPIRY"))),
             });
     }
 
