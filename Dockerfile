@@ -20,4 +20,6 @@ RUN dotnet publish "API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN mkdir -p /app/keys
+COPY --chown=www-data:www-data keys /app/keys
 ENTRYPOINT ["dotnet", "API.dll"]
