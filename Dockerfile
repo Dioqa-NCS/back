@@ -21,4 +21,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 RUN mkdir -p /app/keys
+VOLUME ["/app/keys"]
 ENTRYPOINT ["dotnet", "API.dll"]
