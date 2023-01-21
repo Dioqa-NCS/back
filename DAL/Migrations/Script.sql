@@ -8,6 +8,7 @@ START TRANSACTION;
 
 ALTER DATABASE CHARACTER SET utf8mb4;
 
+
 CREATE TABLE `adressetransport` (
     `id` int NOT NULL AUTO_INCREMENT,
     `nom` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
