@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DAL.Migrations
 {
-    public partial class initialisatonBDD : Migration
+    public partial class InitializationDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -77,23 +77,6 @@ namespace DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_marque", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Permissions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Permissions", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -474,27 +457,27 @@ namespace DAL.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ComptePermission",
+                name: "IdentityRole",
                 columns: table => new
                 {
-                    PermissionCollectionId = table.Column<int>(type: "int", nullable: false),
-                    UserCollectionId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<string>(type: "varchar(95)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CompteId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NormalizedName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ConcurrencyStamp = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ComptePermission", x => new { x.PermissionCollectionId, x.UserCollectionId });
+                    table.PrimaryKey("PK_IdentityRole", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ComptePermission_AspNetUsers_UserCollectionId",
-                        column: x => x.UserCollectionId,
+                        name: "FK_IdentityRole_AspNetUsers_CompteId",
+                        column: x => x.CompteId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ComptePermission_Permissions_PermissionCollectionId",
-                        column: x => x.PermissionCollectionId,
-                        principalTable: "Permissions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -624,6 +607,53 @@ namespace DAL.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, "cc985522-8974-43de-8b60-5d4b57608af4", "Administrateur", "ADMINISTRATEUR" },
+                    { 2, "e8583726-ab97-4579-b405-9deb4ec6598c", "Client", "CLIENT" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "rolecompte",
+                columns: new[] { "id", "nom" },
+                values: new object[,]
+                {
+                    { 1, "Administrateur" },
+                    { 2, "Client" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "statuttransport",
+                columns: new[] { "id", "couleurHex", "nom" },
+                values: new object[,]
+                {
+                    { 1, "#323E40", "En attente de validation" },
+                    { 2, "#F2A922", "Planifié" },
+                    { 3, "#D98014", "En cours" },
+                    { 4, "#367334", "Terminé" },
+                    { 5, "#A62929", "Annulé" },
+                    { 6, "#BF926B", "Expiré" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "typeentreprise",
+                columns: new[] { "id", "nom" },
+                values: new object[,]
+                {
+                    { 1, "EL / EIRL" },
+                    { 2, "EURL" },
+                    { 3, "SARL" },
+                    { 4, "SA" },
+                    { 5, "SAS / SASU" },
+                    { 6, "SNC" },
+                    { 7, "Scop" },
+                    { 8, "SCA" },
+                    { 9, "SCS" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "idCompte",
                 table: "adresse",
@@ -677,9 +707,9 @@ namespace DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ComptePermission_UserCollectionId",
-                table: "ComptePermission",
-                column: "UserCollectionId");
+                name: "IX_IdentityRole_CompteId",
+                table: "IdentityRole",
+                column: "CompteId");
 
             migrationBuilder.CreateIndex(
                 name: "idAdresseDebut",
@@ -748,7 +778,7 @@ namespace DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ComptePermission");
+                name: "IdentityRole");
 
             migrationBuilder.DropTable(
                 name: "marque");
@@ -767,9 +797,6 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Permissions");
 
             migrationBuilder.DropTable(
                 name: "transport");

@@ -895,14 +895,14 @@ namespace DAL.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "bef4b560-3a92-479c-b888-1c5cf3ae5bda",
+                            ConcurrencyStamp = "cc985522-8974-43de-8b60-5d4b57608af4",
                             Name = "Administrateur",
                             NormalizedName = "ADMINISTRATEUR"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "1b379714-f68f-4b7e-b4af-b9e827cf42a0",
+                            ConcurrencyStamp = "e8583726-ab97-4579-b405-9deb4ec6598c",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         });
