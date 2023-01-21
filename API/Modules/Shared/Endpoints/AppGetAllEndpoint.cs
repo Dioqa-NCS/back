@@ -1,5 +1,6 @@
 ﻿using AutoMapper.AspNet.OData;
 using DAL;
+using DAL.Modules;
 using Microsoft.AspNetCore.OData.Query;
 
 namespace API.Modules.Shared.Endpoints;

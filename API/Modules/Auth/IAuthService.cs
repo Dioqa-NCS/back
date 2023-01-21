@@ -1,4 +1,5 @@
 ﻿using API.Modules.Auth.Ressources;
+using DAL.Modules.Comptes;
 
 namespace API.Modules.Auth;
 

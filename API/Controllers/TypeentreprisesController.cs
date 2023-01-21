@@ -1,9 +1,12 @@
-﻿using API.Modules.Typeentreprises;
+﻿using API.Modules.Comptes.Ressources;
+using API.Modules.Typeentreprises;
 using API.Modules.Typeentreprises.Ressources;
 using DAL;
+using DAL.Modules.Typeentreprises;
 using Microsoft.AspNetCore.OData.Query;
 
 namespace API.Controllers;
+
 
 [Route("api/[controller]")]
 [ApiController]

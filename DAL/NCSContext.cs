@@ -15,10 +15,9 @@ public class NCSContext : Context
     {
         if(!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseMySql("server=bef4oahbww6ootvomeaw-mysql.services.clever-cloud.com;port=3306;pwd=RgUEHpzjVM8Q7OxXFsx1;user=unq6tuny3kxylule;database=bef4oahbww6ootvomeaw;", new MySqlServerVersion(new Version()));
+            optionsBuilder.UseMySql("server=localhost;port=3306;user=root;database=ncs;", new MySqlServerVersion(new Version()));
         }
     }
-
 
     public override int SaveChanges()
     {

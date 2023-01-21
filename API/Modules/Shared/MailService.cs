@@ -37,7 +37,7 @@ public class MailService : IMailService
             email.Body = builder.ToMessageBody();
 
             SmtpClient smtp = new();
-            await smtp.ConnectAsync(Environment.GetEnvironmentVariable("SMTP_HOST"), int.Parse("SMTP_PORT"), SecureSocketOptions.StartTls);
+            await smtp.ConnectAsync(Environment.GetEnvironmentVariable("SMTP_HOST"), int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT")), SecureSocketOptions.StartTls);
             smtp.Authenticate(Environment.GetEnvironmentVariable("SMTP_MAIL"), Environment.GetEnvironmentVariable("SMTP_PASSWORD"));
 
             await smtp.SendAsync(email);

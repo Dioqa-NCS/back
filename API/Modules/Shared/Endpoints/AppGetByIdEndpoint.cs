@@ -1,6 +1,6 @@
 ﻿using AutoMapper.AspNet.OData;
 using DAL;
-using DAL.Core.Models;
+using DAL.Modules;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 

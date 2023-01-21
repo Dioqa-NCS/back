@@ -2,7 +2,7 @@
 
 namespace API.Modules.Auth.Ressources;
 
-public class SigninRequest
+public struct SigninRequest
 {
     [Required]
     public string Username { get; set; }

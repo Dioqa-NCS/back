@@ -1,4 +1,5 @@
 ﻿using API.Modules.Auth.Ressources;
+using DAL.Modules.Comptes;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Modules.Auth.Validators;

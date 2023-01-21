@@ -1,7 +1,12 @@
 ﻿namespace API.Modules.Comptes.Ressources;
 
-public class ComptePatch
+public partial class ComptePatch
 {
+    public ComptePatch()
+    {
+
+    }
+
     public int Id { get; set; }
     public string? EstValider { get; set; }
     public int? IdRoleCompte { get; set; }

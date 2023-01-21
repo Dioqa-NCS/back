@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using API.Modules.Auth.Ressources;
 using System.IdentityModel.Tokens.Jwt;
+using DAL.Modules.Comptes;
 
 namespace API.Modules.Auth;
 
@@ -54,7 +55,7 @@ public class AuthService : IAuthService
                 return null;
             }
 
-            await _signInManager.UserManager.AddToRoleAsync(userCreate, "Client");
+            await _signInManager.UserManager.AddToRoleAsync(userCreate, AuthRole.Customer);
             return userCreate;
         }
         catch(Exception ex)

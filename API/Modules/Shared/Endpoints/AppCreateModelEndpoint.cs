@@ -1,4 +1,6 @@
-﻿namespace API.Modules.Shared.Endpoints;
+﻿using DAL.Modules;
+
+namespace API.Modules.Shared.Endpoints;
 
 public static class AppCreateModelEndpoint
 {

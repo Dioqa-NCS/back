@@ -5,12 +5,9 @@ using API.Modules.Shared;
 using API.Modules.Swagger;
 using API.Modules.Typeentreprises;
 using DAL;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.DataProtection;
 
 namespace API.Modules;
 
@@ -32,6 +29,7 @@ public static class AppModule
 
         builder.Services.AddProblemDetails();
 
+        var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION");
 
         builder.Services.AddDbContext<NCSContext>(options =>
             options.UseMySql(

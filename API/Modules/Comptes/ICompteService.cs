@@ -1,4 +1,5 @@
 ﻿using API.Modules.Shared;
+using DAL.Modules.Comptes;
 
 namespace API.Modules.Comptes;
 

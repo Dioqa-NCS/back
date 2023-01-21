@@ -1,4 +1,6 @@
-﻿namespace DAL.Extensions;
+﻿using DAL.Modules;
+
+namespace DAL.Extensions;
 public static class Model
 {
     public static void Set<TKey>( this IModel<TKey> entityToSet, IModel<TKey> entity ) where TKey : IEquatable<TKey>

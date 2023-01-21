@@ -1,4 +1,6 @@
-﻿namespace API.Modules.Typeentreprises;
+﻿using DAL.Modules.Typeentreprises;
+
+namespace API.Modules.Typeentreprises;
 
 public static class TypeentrepriseModule
 {

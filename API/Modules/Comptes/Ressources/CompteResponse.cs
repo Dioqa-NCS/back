@@ -1,4 +1,6 @@
-﻿using API.Modules.Typeentreprises.Ressources;
+﻿#nullable disable
+
+using API.Modules.Typeentreprises.Ressources;
 
 namespace API.Modules.Comptes.Ressources;
 

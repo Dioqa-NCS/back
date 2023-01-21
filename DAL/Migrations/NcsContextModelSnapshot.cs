@@ -19,22 +19,7 @@ namespace DAL.Migrations
                 .HasAnnotation("ProductVersion", "6.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("ComptePermission", b =>
-                {
-                    b.Property<int>("PermissionCollectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserCollectionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PermissionCollectionId", "UserCollectionId");
-
-                    b.HasIndex("UserCollectionId");
-
-                    b.ToTable("ComptePermission");
-                });
-
-            modelBuilder.Entity("DAL.Core.Models.Adresse", b =>
+            modelBuilder.Entity("DAL.Modules.Adresses.Adresse", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,7 +97,7 @@ namespace DAL.Migrations
                     b.ToTable("adresse", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Adressetransport", b =>
+            modelBuilder.Entity("DAL.Modules.Adressetransports.Adressetransport", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -184,7 +169,7 @@ namespace DAL.Migrations
                     b.ToTable("adressetransport", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Compte", b =>
+            modelBuilder.Entity("DAL.Modules.Comptes.Compte", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -340,6 +325,8 @@ namespace DAL.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
+                    b.HasIndex(new[] { "NormalizedEmail" }, "EmailIndex");
+
                     b.HasIndex(new[] { "IdRoleCompte" }, "idRoleCompte");
 
                     b.HasIndex(new[] { "IdTypeEntreprise" }, "idTypeEntreprise");
@@ -347,7 +334,7 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Marque", b =>
+            modelBuilder.Entity("DAL.Modules.Marques.Marque", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -365,24 +352,7 @@ namespace DAL.Migrations
                     b.ToTable("marque", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Permission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Permissions");
-                });
-
-            modelBuilder.Entity("DAL.Core.Models.Rolecompte", b =>
+            modelBuilder.Entity("DAL.Modules.Rolecomptes.Rolecompte", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -398,9 +368,21 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("rolecompte", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nom = "Administrateur"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nom = "Client"
+                        });
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Servicesupplementaire", b =>
+            modelBuilder.Entity("DAL.Modules.Servicesupplementaires.Servicesupplementaire", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -422,7 +404,7 @@ namespace DAL.Migrations
                     b.ToTable("servicesupplementaire", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Servicesupplementairetransport", b =>
+            modelBuilder.Entity("DAL.Modules.Servicesupplementairetransports.Servicesupplementairetransport", b =>
                 {
                     b.Property<int>("IdTransport")
                         .HasColumnType("int")
@@ -448,7 +430,7 @@ namespace DAL.Migrations
                     b.ToTable("servicesupplementairetransport", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Statuttransport", b =>
+            modelBuilder.Entity("DAL.Modules.Statuttransports.Statuttransport", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -471,9 +453,47 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("statuttransport", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CouleurHex = "#323E40",
+                            Nom = "En attente de validation"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CouleurHex = "#F2A922",
+                            Nom = "Planifié"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CouleurHex = "#D98014",
+                            Nom = "En cours"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CouleurHex = "#367334",
+                            Nom = "Terminé"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CouleurHex = "#A62929",
+                            Nom = "Annulé"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CouleurHex = "#BF926B",
+                            Nom = "Expiré"
+                        });
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Tarif", b =>
+            modelBuilder.Entity("DAL.Modules.Tarifs.Tarif", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -501,7 +521,7 @@ namespace DAL.Migrations
                     b.ToTable("tarif", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Ticket", b =>
+            modelBuilder.Entity("DAL.Modules.Tickets.Ticket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -559,7 +579,7 @@ namespace DAL.Migrations
                     b.ToTable("ticket", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Transport", b =>
+            modelBuilder.Entity("DAL.Modules.Transports.Transport", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -648,7 +668,7 @@ namespace DAL.Migrations
                     b.ToTable("transport", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Typeentreprise", b =>
+            modelBuilder.Entity("DAL.Modules.Typeentreprises.Typeentreprise", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -664,9 +684,56 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("typeentreprise", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nom = "EL / EIRL"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nom = "EURL"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nom = "SARL"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Nom = "SA"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Nom = "SAS / SASU"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Nom = "SNC"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Nom = "Scop"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Nom = "SCA"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Nom = "SCS"
+                        });
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Typemoteur", b =>
+            modelBuilder.Entity("DAL.Modules.Typemoteurs.Typemoteur", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -684,7 +751,7 @@ namespace DAL.Migrations
                     b.ToTable("typemoteur", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Typevehicule", b =>
+            modelBuilder.Entity("DAL.Modules.Typevehicules.Typevehicule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -713,7 +780,7 @@ namespace DAL.Migrations
                     b.ToTable("typevehicule", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Vehicule", b =>
+            modelBuilder.Entity("DAL.Modules.Vehicules.Vehicule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -774,6 +841,30 @@ namespace DAL.Migrations
                     b.ToTable("vehicule", (string)null);
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(95)");
+
+                    b.Property<int?>("CompteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompteId");
+
+                    b.ToTable("IdentityRole");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -799,6 +890,22 @@ namespace DAL.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "bef4b560-3a92-479c-b888-1c5cf3ae5bda",
+                            Name = "Administrateur",
+                            NormalizedName = "ADMINISTRATEUR"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConcurrencyStamp = "1b379714-f68f-4b7e-b4af-b9e827cf42a0",
+                            Name = "Client",
+                            NormalizedName = "CLIENT"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -905,24 +1012,9 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ComptePermission", b =>
+            modelBuilder.Entity("DAL.Modules.Adresses.Adresse", b =>
                 {
-                    b.HasOne("DAL.Core.Models.Permission", null)
-                        .WithMany()
-                        .HasForeignKey("PermissionCollectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Core.Models.Compte", null)
-                        .WithMany()
-                        .HasForeignKey("UserCollectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DAL.Core.Models.Adresse", b =>
-                {
-                    b.HasOne("DAL.Core.Models.Compte", "Compte")
+                    b.HasOne("DAL.Modules.Comptes.Compte", "Compte")
                         .WithMany("Adresses")
                         .HasForeignKey("IdCompte")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -931,15 +1023,15 @@ namespace DAL.Migrations
                     b.Navigation("Compte");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Compte", b =>
+            modelBuilder.Entity("DAL.Modules.Comptes.Compte", b =>
                 {
-                    b.HasOne("DAL.Core.Models.Rolecompte", "IdRoleCompteNavigation")
+                    b.HasOne("DAL.Modules.Rolecomptes.Rolecompte", "IdRoleCompteNavigation")
                         .WithMany("Comptes")
                         .HasForeignKey("IdRoleCompte")
                         .IsRequired()
                         .HasConstraintName("compte_ibfk_1");
 
-                    b.HasOne("DAL.Core.Models.Typeentreprise", "TypeEntreprise")
+                    b.HasOne("DAL.Modules.Typeentreprises.Typeentreprise", "TypeEntreprise")
                         .WithMany("Comptes")
                         .HasForeignKey("IdTypeEntreprise")
                         .IsRequired()
@@ -950,9 +1042,9 @@ namespace DAL.Migrations
                     b.Navigation("TypeEntreprise");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Servicesupplementairetransport", b =>
+            modelBuilder.Entity("DAL.Modules.Servicesupplementairetransports.Servicesupplementairetransport", b =>
                 {
-                    b.HasOne("DAL.Core.Models.Transport", "IdTransportNavigation")
+                    b.HasOne("DAL.Modules.Transports.Transport", "IdTransportNavigation")
                         .WithMany("Servicesupplementairetransports")
                         .HasForeignKey("IdTransport")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -962,38 +1054,38 @@ namespace DAL.Migrations
                     b.Navigation("IdTransportNavigation");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Transport", b =>
+            modelBuilder.Entity("DAL.Modules.Transports.Transport", b =>
                 {
-                    b.HasOne("DAL.Core.Models.Adressetransport", "IdAdresseDebutNavigation")
+                    b.HasOne("DAL.Modules.Adressetransports.Adressetransport", "IdAdresseDebutNavigation")
                         .WithMany("TransportIdAdresseDebutNavigations")
                         .HasForeignKey("IdAdresseDebut")
                         .IsRequired()
                         .HasConstraintName("transport_ibfk_5");
 
-                    b.HasOne("DAL.Core.Models.Adressetransport", "IdAdresseFinNavigation")
+                    b.HasOne("DAL.Modules.Adressetransports.Adressetransport", "IdAdresseFinNavigation")
                         .WithMany("TransportIdAdresseFinNavigations")
                         .HasForeignKey("IdAdresseFin")
                         .IsRequired()
                         .HasConstraintName("transport_ibfk_6");
 
-                    b.HasOne("DAL.Core.Models.Compte", "IdCompteNavigation")
+                    b.HasOne("DAL.Modules.Comptes.Compte", "IdCompteNavigation")
                         .WithMany("Transports")
                         .HasForeignKey("IdCompte")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("transport_ibfk_1");
 
-                    b.HasOne("DAL.Core.Models.Statuttransport", "IdStatutTransportNavigation")
+                    b.HasOne("DAL.Modules.Statuttransports.Statuttransport", "IdStatutTransportNavigation")
                         .WithMany("Transports")
                         .HasForeignKey("IdStatutTransport")
                         .HasConstraintName("transport_ibfk_4");
 
-                    b.HasOne("DAL.Core.Models.Vehicule", "IdVehiculeLivraisonNavigation")
+                    b.HasOne("DAL.Modules.Vehicules.Vehicule", "IdVehiculeLivraisonNavigation")
                         .WithMany("TransportIdVehiculeLivraisonNavigations")
                         .HasForeignKey("IdVehiculeLivraison")
                         .HasConstraintName("transport_ibfk_2");
 
-                    b.HasOne("DAL.Core.Models.Vehicule", "IdVehiculeRepriseNavigation")
+                    b.HasOne("DAL.Modules.Vehicules.Vehicule", "IdVehiculeRepriseNavigation")
                         .WithMany("TransportIdVehiculeRepriseNavigations")
                         .HasForeignKey("IdVehiculeReprise")
                         .HasConstraintName("transport_ibfk_3");
@@ -1011,22 +1103,22 @@ namespace DAL.Migrations
                     b.Navigation("IdVehiculeRepriseNavigation");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Vehicule", b =>
+            modelBuilder.Entity("DAL.Modules.Vehicules.Vehicule", b =>
                 {
-                    b.HasOne("DAL.Core.Models.Compte", "IdCompteNavigation")
+                    b.HasOne("DAL.Modules.Comptes.Compte", "IdCompteNavigation")
                         .WithMany("Vehicules")
                         .HasForeignKey("IdCompte")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("vehicule_ibfk_3");
 
-                    b.HasOne("DAL.Core.Models.Typemoteur", "IdTypeMoteurNavigation")
+                    b.HasOne("DAL.Modules.Typemoteurs.Typemoteur", "IdTypeMoteurNavigation")
                         .WithMany("Vehicules")
                         .HasForeignKey("IdTypeMoteur")
                         .IsRequired()
                         .HasConstraintName("vehicule_ibfk_2");
 
-                    b.HasOne("DAL.Core.Models.Typevehicule", "IdTypeVehiculeNavigation")
+                    b.HasOne("DAL.Modules.Typevehicules.Typevehicule", "IdTypeVehiculeNavigation")
                         .WithMany("Vehicules")
                         .HasForeignKey("IdTypeVehicule")
                         .IsRequired()
@@ -1037,6 +1129,13 @@ namespace DAL.Migrations
                     b.Navigation("IdTypeMoteurNavigation");
 
                     b.Navigation("IdTypeVehiculeNavigation");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.HasOne("DAL.Modules.Comptes.Compte", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("CompteId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -1050,7 +1149,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("DAL.Core.Models.Compte", null)
+                    b.HasOne("DAL.Modules.Comptes.Compte", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1059,7 +1158,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("DAL.Core.Models.Compte", null)
+                    b.HasOne("DAL.Modules.Comptes.Compte", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1074,7 +1173,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Core.Models.Compte", null)
+                    b.HasOne("DAL.Modules.Comptes.Compte", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1083,60 +1182,62 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("DAL.Core.Models.Compte", null)
+                    b.HasOne("DAL.Modules.Comptes.Compte", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Adressetransport", b =>
+            modelBuilder.Entity("DAL.Modules.Adressetransports.Adressetransport", b =>
                 {
                     b.Navigation("TransportIdAdresseDebutNavigations");
 
                     b.Navigation("TransportIdAdresseFinNavigations");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Compte", b =>
+            modelBuilder.Entity("DAL.Modules.Comptes.Compte", b =>
                 {
                     b.Navigation("Adresses");
+
+                    b.Navigation("Roles");
 
                     b.Navigation("Transports");
 
                     b.Navigation("Vehicules");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Rolecompte", b =>
+            modelBuilder.Entity("DAL.Modules.Rolecomptes.Rolecompte", b =>
                 {
                     b.Navigation("Comptes");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Statuttransport", b =>
+            modelBuilder.Entity("DAL.Modules.Statuttransports.Statuttransport", b =>
                 {
                     b.Navigation("Transports");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Transport", b =>
+            modelBuilder.Entity("DAL.Modules.Transports.Transport", b =>
                 {
                     b.Navigation("Servicesupplementairetransports");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Typeentreprise", b =>
+            modelBuilder.Entity("DAL.Modules.Typeentreprises.Typeentreprise", b =>
                 {
                     b.Navigation("Comptes");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Typemoteur", b =>
+            modelBuilder.Entity("DAL.Modules.Typemoteurs.Typemoteur", b =>
                 {
                     b.Navigation("Vehicules");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Typevehicule", b =>
+            modelBuilder.Entity("DAL.Modules.Typevehicules.Typevehicule", b =>
                 {
                     b.Navigation("Vehicules");
                 });
 
-            modelBuilder.Entity("DAL.Core.Models.Vehicule", b =>
+            modelBuilder.Entity("DAL.Modules.Vehicules.Vehicule", b =>
                 {
                     b.Navigation("TransportIdVehiculeLivraisonNavigations");
 

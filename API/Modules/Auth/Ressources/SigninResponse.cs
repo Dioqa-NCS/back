@@ -1,4 +1,6 @@
-﻿namespace API.Modules.Auth.Ressources;
+﻿#nullable enable
+
+namespace API.Modules.Auth.Ressources;
 
 public class SigninRessponse
 {

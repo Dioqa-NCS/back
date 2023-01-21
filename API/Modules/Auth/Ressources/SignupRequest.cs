@@ -1,6 +1,6 @@
 ﻿namespace API.Modules.Auth.Ressources;
 
-public class SignupRequest
+public struct SignupRequest
 {
     public string UserName { get; set; }
     public int IdTypeEntreprise { get; set; }

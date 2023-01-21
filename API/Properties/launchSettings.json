@@ -6,7 +6,15 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DATABASE_CONNECTION": "server=localhost;port=3306;user=root;database=ncs;",
+        "CORS_DOMAINS": "http://localhost:4200",
+        "COOKIE_EXPIRY": "120",
+        "SMTP_MAIL": "agustin.dare93@ethereal.email",
+        "SMTP_DISPLAYNAME": "Agustin Dare",
+        "SMTP_PASSWORD": "kvPRJ5HFwX9HATQ89f",
+        "SMTP_HOST": "smtp.ethereal.email",
+        "SMTP_PORT": "587"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7177;http://localhost:5177"
@@ -28,7 +36,7 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DATABASE_CONNECTION": "server=localhost;port=3306;user=root;database=ncs;",
+        "DATABASE_CONNECTION": "server=host.docker.internal;port=3306;user=root;database=ncs;",
         "CORS_DOMAINS": "http://localhost:4200",
         "COOKIE_EXPIRY": "120",
         "SMTP_MAIL": "agustin.dare93@ethereal.email",

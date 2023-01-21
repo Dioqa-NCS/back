@@ -1,8 +1,10 @@
-﻿using API.Modules.Comptes.Ressources;
+﻿#nullable disable
+
+using API.Modules.Comptes.Ressources;
 
 namespace API.Modules.Typeentreprises.Ressources;
 
-public class TypeentrepriseResponse
+public partial class TypeentrepriseResponse
 {
     public int Id { get; set; }
 

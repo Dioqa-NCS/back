@@ -2,6 +2,7 @@
 using API.Modules.Shared.QueryParams;
 using AutoMapper.AspNet.OData;
 using DAL;
+using DAL.Modules;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;

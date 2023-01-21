@@ -2,6 +2,7 @@
 using API.Modules.Auth.Ressources;
 using API.Modules.Auth.Validators;
 using DAL;
+using DAL.Modules.Comptes;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 
@@ -11,9 +12,6 @@ public static class AuthModule
 {
     public static WebApplicationBuilder RegisterAuthModule(this WebApplicationBuilder builder)
     {
-        var ddd = builder.Configuration.GetSection("JWTSETTINGS");
-
-
         builder.Services.AddIdentity<Compte, IdentityRole<int>>()
             .AddDefaultTokenProviders()
             .AddUserManager<UserManager<Compte>>()
@@ -99,13 +97,12 @@ public static class AuthModule
 
         auth.MapPost("signout", SignoutEndpoint.signout)
             .Produces(StatusCodes.Status204NoContent)
-            .RequireAuthorization("customer")
-            .RequireAuthorization("admin");
+            .RequireAuthorization(AuthPolicies.Customer)
+            .RequireAuthorization(AuthPolicies.Admin);
 
         auth.MapGet("checkauth", CheckauthEndpoint.checkAuth)
             .Produces<SignedinResponse>()
             .ProducesProblem(StatusCodes.Status500InternalServerError)
-            .WithOpenApi()
             .AllowAnonymous();
 
         auth.MapPost("Roles", CreateRoleEndpoint.CreateRole)

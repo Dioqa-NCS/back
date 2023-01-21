@@ -1,5 +1,5 @@
 ﻿using API.Modules.Shared.QueryParams;
-using DAL.Core.Models;
+using DAL.Modules;
 
 namespace API.Modules.Shared.Endpoints;
 

@@ -1,7 +1,5 @@
-﻿global using DAL.Core.IRepositories;
-global using DAL.Datas.Repositories;
-global using DAL.Core.Models;
-global using DAL.Core.IRepositories.IRepository;
+﻿global using DAL.Modules.Comptes;
+global using DAL.Modules.Adresses;
 
 global using API.Communication;
 

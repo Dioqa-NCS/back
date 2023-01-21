@@ -1,4 +1,6 @@
-﻿namespace API.Modules.Auth.Ressources;
+﻿#nullable disable
+
+namespace API.Modules.Auth.Ressources;
 
 public class AvailableUsernameRequest
 {

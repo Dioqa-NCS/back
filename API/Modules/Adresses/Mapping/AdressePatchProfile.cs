@@ -1,4 +1,5 @@
 ﻿using API.Modules.Adresses.Ressources;
+using DAL.Modules.Adresses;
 
 namespace API.Modules.Adresses.Mapping;
 
