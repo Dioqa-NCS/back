@@ -14,4 +14,4 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Run migrations
-      run: mysql -h {{ secrets.MYSQL_HOST }} -u {{ secrets.MYSQL_USER }} -p {{ secrets.MYSQL_PASSWORD }} {{ secrets.MYSQL_DATABASE }} < DAL/Migrations/Script.sql  
+      run: mysql -h {{ secrets.MYSQL_HOST }} -u {{ secrets.MYSQL_USER }} -p {{ secrets.MYSQL_PASSWORD }} {{ secrets.MYSQL_DATABASE }} -e DAL/Migrations/Script.sql  
