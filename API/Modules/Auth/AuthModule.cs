@@ -75,6 +75,7 @@ public static class AuthModule
             .WithTags("Auth")
             .RequireAuthorization(AuthPolicies.Admin);
 
+
         auth.MapPost("Compte/{userEmail}/Role", AddRoleToUserEndpoint.addRoleToUser)
             .ProducesValidationProblem()
             .ProducesProblem(StatusCodes.Status500InternalServerError)
