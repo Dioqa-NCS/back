@@ -1,0 +1,17 @@
+name: Migration
+
+on:
+  push:
+    paths:
+    - DAL/Migrations/**
+
+jobs:
+  run-migrations:
+    runs-on: ubuntu-latest
+    container:
+      image: mysql:latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Run migrations
+      run: mysql -h {{ secrets.MYSQL_HOST }} -u {{ secrets.MYSQL_USER }} -p {{ secrets.MYSQL_PASSWORD }} {{ secrets.MYSQL_DATABASE }}  
