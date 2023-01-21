@@ -385,3 +385,42 @@ VALUES ('20230121153936_SeedingDatabase', '6.0.13');
 
 COMMIT;
 
+START TRANSACTION;
+
+UPDATE `AspNetRoles` SET `ConcurrencyStamp` = 'd45fe6af-6e1b-46f6-ae74-146048f1a11b'
+WHERE `Id` = 1;
+SELECT ROW_COUNT();
+
+
+UPDATE `AspNetRoles` SET `ConcurrencyStamp` = '46ca547b-ae33-484d-b765-f7844b303662'
+WHERE `Id` = 2;
+SELECT ROW_COUNT();
+
+
+INSERT INTO `rolecompte` (`id`, `nom`)
+VALUES (1, 'Administrateur');
+INSERT INTO `rolecompte` (`id`, `nom`)
+VALUES (2, 'Client');
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20230121174612_SeedingRolCompte', '6.0.13');
+
+COMMIT;
+
+START TRANSACTION;
+
+UPDATE `AspNetRoles` SET `ConcurrencyStamp` = 'bef4b560-3a92-479c-b888-1c5cf3ae5bda', `NormalizedName` = 'ADMINISTRATEUR'
+WHERE `Id` = 1;
+SELECT ROW_COUNT();
+
+
+UPDATE `AspNetRoles` SET `ConcurrencyStamp` = '1b379714-f68f-4b7e-b4af-b9e827cf42a0', `NormalizedName` = 'CLIENT'
+WHERE `Id` = 2;
+SELECT ROW_COUNT();
+
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20230121175147_FixSeedIdentityRole', '6.0.13');
+
+COMMIT;
+

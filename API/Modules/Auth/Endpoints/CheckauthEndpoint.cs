@@ -5,6 +5,8 @@ namespace API.Modules.Auth.Endpoints;
 
 public static class CheckauthEndpoint
 {
+    public const string Description = "Vérifie si l'utilisateur courrant est connecté à l'API.";
+
     public static IResult checkAuth(HttpContext context)
     {
         var nameClaime = context.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name);

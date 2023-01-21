@@ -77,37 +77,44 @@ public static class AuthModule
 
         auth.MapPost("Compte/{userEmail}/Role", AddRoleToUserEndpoint.addRoleToUser)
             .ProducesValidationProblem()
-            .ProducesProblem(StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithDescription(AddRoleToUserEndpoint.Description);
 
 
         auth.MapPost("signup", SignupEndpoint.signup)
             .Produces<SignupResponse>(StatusCodes.Status201Created)
             .ProducesValidationProblem()
-            .AllowAnonymous();
+            .AllowAnonymous()
+            .WithDescription(SignupEndpoint.Description);
 
         auth.MapPost("username", UsernameEndpoint.username)
             .Produces<AvailableUsernameRequest>()
-            .AllowAnonymous();
+            .AllowAnonymous()
+            .WithDescription(UsernameEndpoint.Description);
 
         auth.MapPost("signin", SigninEndpoint.signin)
             .Produces<SigninRessponse>()
             .ProducesProblem(StatusCodes.Status409Conflict)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
-            .AllowAnonymous();
+            .AllowAnonymous()
+            .WithDescription(SigninEndpoint.Description);
 
         auth.MapPost("signout", SignoutEndpoint.signout)
             .Produces(StatusCodes.Status204NoContent)
             .RequireAuthorization(AuthPolicies.Customer)
-            .RequireAuthorization(AuthPolicies.Admin);
+            .RequireAuthorization(AuthPolicies.Admin)
+            .WithDescription(SignoutEndpoint.Description);
 
         auth.MapGet("checkauth", CheckauthEndpoint.checkAuth)
             .Produces<SignedinResponse>()
             .ProducesProblem(StatusCodes.Status500InternalServerError)
-            .AllowAnonymous();
+            .AllowAnonymous()
+            .WithDescription(CheckauthEndpoint.Description);
 
         auth.MapPost("Roles", CreateRoleEndpoint.CreateRole)
             .Produces(StatusCodes.Status200OK)
-            .ProducesValidationProblem();
+            .ProducesValidationProblem()
+            .WithDescription(CreateRoleEndpoint.Description);
 
         return auth;
     }

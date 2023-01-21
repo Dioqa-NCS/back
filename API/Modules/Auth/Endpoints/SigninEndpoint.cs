@@ -1,11 +1,11 @@
 ﻿using API.Modules.Auth.Ressources;
-using DAL.Modules.Comptes;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Modules.Auth.Endpoints;
 
 public class SigninEndpoint
 {
+    public const string Description = "Authentification à l'API NCS.";
     public static async Task<IResult> signin(
             [FromServices] IAuthService authService,
             [FromServices] UserManager<Compte> userManager,

@@ -1,10 +1,11 @@
-﻿using DAL.Modules.Comptes;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace API.Modules.Auth.Endpoints;
 
 public static class AddRoleToUserEndpoint
 {
+    public const string Description = "Ajout d'un role à un compte existant.";
+
     public static async Task<IResult> addRoleToUser(
         [FromServices] UserManager<Compte> userManager,
         string userEmail, 

@@ -5,6 +5,8 @@ namespace API.Modules.Auth.Endpoints;
 
 public static class SignupEndpoint
 {
+    public const string Description = "Demande de compte d'utilisation l'API NCS.";
+
     public static async Task<IResult> signup(
             [FromServices] IAuthService authService,
             [FromServices] IMailService mailService,
