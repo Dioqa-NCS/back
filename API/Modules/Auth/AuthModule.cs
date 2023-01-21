@@ -66,6 +66,8 @@ public static class AuthModule
     }
 
 
+
+
     public static IEndpointRouteBuilder MapAuthEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var auth = endpoints
