@@ -32,6 +32,7 @@ public static class AuthModule
                 options.ExpireTimeSpan = TimeSpan.FromDays(int.Parse(Environment.GetEnvironmentVariable("COOKIE_EXPIRY")));
                 options.SlidingExpiration = true;
                 options.Cookie.HttpOnly = true;
+                options.Cookie.Path = "/";
                 options.Events.OnRedirectToLogin = context =>
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
