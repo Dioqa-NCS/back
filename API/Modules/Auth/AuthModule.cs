@@ -23,16 +23,16 @@ public static class AuthModule
             .AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
                 options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.Domain = Environment.GetEnvironmentVariable("CORS_DOMAINS");
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromDays(int.Parse(Environment.GetEnvironmentVariable("COOKIE_EXPIRY")));
                 options.SlidingExpiration = true;
-                options.Cookie.HttpOnly = true;
+                options.Cookie.Path = "/";
                 options.Events.OnRedirectToLogin = context =>
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -52,16 +52,13 @@ public static class AuthModule
         builder.Services.AddTransient<IAuthService, AuthService>();
         builder.Services.AddValidatorsFromAssemblyContaining<SignupRequestValidator>(ServiceLifetime.Transient);
 
-        // Environment.GetEnvironmentVariable("CORS_DOMAINS")
+
         builder.Services.AddCors(options => options.AddPolicy(name: AuthPolicies.CORS,
         policy => policy
            .WithOrigins(Environment.GetEnvironmentVariable("CORS_DOMAINS"))
-           .WithExposedHeaders("Set-Cookie")
-           .WithHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
+           .WithMethods("GET", "PATCH", "POST", "DELETE", "OPTIONS")
            .AllowAnyHeader()
            .AllowCredentials()
-           .WithMethods("GET", "PATCH", "POST", "DELETE", "OPTIONS")
-           .SetPreflightMaxAge(TimeSpan.FromSeconds(3600))
            ));
 
         return builder;
