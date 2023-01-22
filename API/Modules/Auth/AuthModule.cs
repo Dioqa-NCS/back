@@ -29,6 +29,7 @@ public static class AuthModule
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
                 options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.Domain = Environment.GetEnvironmentVariable("CORS_DOMAINS");
                 options.ExpireTimeSpan = TimeSpan.FromDays(int.Parse(Environment.GetEnvironmentVariable("COOKIE_EXPIRY")));
                 options.SlidingExpiration = true;
                 options.Cookie.HttpOnly = true;
@@ -54,7 +55,7 @@ public static class AuthModule
         // Environment.GetEnvironmentVariable("CORS_DOMAINS")
         builder.Services.AddCors(options => options.AddPolicy(name: AuthPolicies.CORS,
         policy => policy
-           .WithOrigins("*")
+           .WithOrigins(Environment.GetEnvironmentVariable("CORS_DOMAINS"))
            .WithExposedHeaders("Set-Cookie")
            .WithHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
            .AllowAnyHeader()
