@@ -29,7 +29,6 @@ public static class AuthModule
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
                 options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.Domain = "https://ncs-front.netlify.app/";
                 options.ExpireTimeSpan = TimeSpan.FromDays(int.Parse(Environment.GetEnvironmentVariable("COOKIE_EXPIRY")));
                 options.SlidingExpiration = true;
                 options.Cookie.HttpOnly = true;
@@ -52,11 +51,12 @@ public static class AuthModule
         builder.Services.AddTransient<IAuthService, AuthService>();
         builder.Services.AddValidatorsFromAssemblyContaining<SignupRequestValidator>(ServiceLifetime.Transient);
 
-
+        // Environment.GetEnvironmentVariable("CORS_DOMAINS")
         builder.Services.AddCors(options => options.AddPolicy(name: AuthPolicies.CORS,
         policy => policy
-           .WithOrigins(Environment.GetEnvironmentVariable("CORS_DOMAINS"))
-           .SetIsOriginAllowed(origin => true)
+           .WithOrigins("*")
+           .WithExposedHeaders("Set-Cookie")
+           .WithHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
            .AllowAnyHeader()
            .AllowCredentials()
            .WithMethods("GET", "PATCH", "POST", "DELETE", "OPTIONS")
