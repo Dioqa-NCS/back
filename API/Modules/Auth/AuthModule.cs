@@ -56,7 +56,7 @@ public static class AuthModule
         builder.Services.AddCors(options => options.AddPolicy(name: AuthPolicies.CORS,
         policy => policy
            .WithOrigins(Environment.GetEnvironmentVariable("CORS_DOMAINS"))
-           .WithExposedHeaders("Set-Cookie")
+           .SetIsOriginAllowed(origin => true)
            .AllowAnyHeader()
            .AllowCredentials()
            .WithMethods("GET", "PATCH", "POST", "DELETE", "OPTIONS")
