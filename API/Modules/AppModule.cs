@@ -74,11 +74,11 @@ public static class AppModule
 
         app.UseSwaggerUI();
 
-        app.UseCors(AuthPolicies.CORS);
-
         app.UseAuthentication();
 
         app.UseHttpsRedirection();
+
+        app.UseCors(AuthPolicies.CORS);
 
         app.UseRouting();
 
