@@ -76,7 +76,7 @@ public class AuthService : IAuthService
         var principal = new ClaimsPrincipal(identity);
 
 
-        await this._httpContext.SignInAsync(
+        await _httpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
             principal,
             new AuthenticationProperties
