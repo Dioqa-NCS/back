@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using API.Modules.Auth.Ressources;
 using System.IdentityModel.Tokens.Jwt;
-using DAL.Modules.Comptes;
 
 namespace API.Modules.Auth;
 

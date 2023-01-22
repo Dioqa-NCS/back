@@ -1,5 +1,4 @@
-﻿using API.Modules.Comptes.Ressources;
-using API.Modules.Typeentreprises;
+﻿using API.Modules.Typeentreprises;
 using API.Modules.Typeentreprises.Ressources;
 using DAL;
 using DAL.Modules.Typeentreprises;

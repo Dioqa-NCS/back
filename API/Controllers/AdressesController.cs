@@ -7,7 +7,7 @@ namespace API.Controllers;
 
 [Route( "api/[controller]" )]
 [ApiController]
-[Authorize(Roles = $"{AuthRole.Admin}, {AuthRole.Customer}")]
+[Authorize(Roles = "Administrateur, Client")]
 public class AdressesController : Controller<Adresse, AdressseResponse, AdressePatch, int>
 {
     public AdressesController( 

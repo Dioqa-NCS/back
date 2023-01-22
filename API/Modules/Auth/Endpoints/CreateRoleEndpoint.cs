@@ -5,6 +5,7 @@ namespace API.Modules.Auth.Endpoints;
 public static class CreateRoleEndpoint
 {
     public const string Description = "Création d'un role utilisateur.";
+
     public static async Task<IResult> CreateRole(
         [FromServices] RoleManager<IdentityRole<int>> roleManager,
         string roleName

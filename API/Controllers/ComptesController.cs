@@ -1,13 +1,11 @@
-﻿using API.Modules.Auth;
-using API.Modules.Comptes;
+﻿using API.Modules.Comptes;
 using API.Modules.Comptes.Ressources;
 using DAL;
-using DAL.Modules.Comptes;
 
 namespace API.Controllers;
 
 
-[Authorize(Roles = $"{AuthRole.Admin}")]
+[Authorize(Roles = "Administrateur")]
 public class ComptesController : Controller<Compte, CompteResponse, ComptePatch, int>
 {
     public ComptesController( 
