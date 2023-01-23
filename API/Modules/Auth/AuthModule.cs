@@ -2,7 +2,6 @@
 using API.Modules.Auth.Ressources;
 using API.Modules.Auth.Validators;
 using DAL;
-using DAL.Modules.Comptes;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 
@@ -72,54 +71,60 @@ public static class AuthModule
 
     public static IEndpointRouteBuilder MapAuthEndpoints(this IEndpointRouteBuilder endpoints)
     {
+
         var auth = endpoints
             .MapGroup("Auth")
             .RequireCors(AuthPolicies.CORS)
             .WithOpenApi()
-            .WithTags("Auth")
-            .RequireAuthorization(AuthPolicies.Admin);
+            .WithTags("Auth");
+
+        var authAdmin = auth.RequireAuthorization(AuthPolicies.Admin);
+
+        var authCustomer = auth.RequireAuthorization(AuthPolicies.Customer);
+
+        var authAllRoles = auth.RequireAuthorization(AuthPolicies.AllRoles);
+
+        var authAnonymous = auth.AllowAnonymous();
 
 
-        auth.MapPost("Compte/{userEmail}/Role", AddRoleToUserEndpoint.addRoleToUser)
+        authAdmin.MapPost("Compte/{userName}/Role", AddRoleToUserEndpoint.addRoleToUser)
             .ProducesValidationProblem()
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription(AddRoleToUserEndpoint.Description);
 
+        authAdmin.MapPost("Roles", CreateRoleEndpoint.CreateRole)
+            .Produces(StatusCodes.Status200OK)
+            .WithDescription(CreateRoleEndpoint.Description)
+            .ProducesValidationProblem();
 
-        auth.MapPost("signup", SignupEndpoint.signup)
+        authAnonymous.MapPost("signup", SignupEndpoint.signup)
             .Produces<SignupResponse>(StatusCodes.Status201Created)
             .ProducesValidationProblem()
-            .WithDescription(SignupEndpoint.Description)
-            .AllowAnonymous();
+            .WithDescription(SignupEndpoint.Description);
 
-        auth.MapPost("username", UsernameEndpoint.username)
+
+        authAnonymous.MapPost("username", UsernameEndpoint.username)
             .Produces<AvailableUsernameRequest>()
-            .WithDescription(UsernameEndpoint.Description)
-            .AllowAnonymous();
+            .WithDescription(UsernameEndpoint.Description);
 
-        auth.MapPost("signin", SigninEndpoint.signin)
+
+        authAnonymous.MapPost("signin", SigninEndpoint.signin)
             .Produces<SigninRessponse>()
             .ProducesProblem(StatusCodes.Status409Conflict)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
-            .WithDescription(SigninEndpoint.Description)
-            .AllowAnonymous();
+            .WithDescription(SigninEndpoint.Description);
 
-        auth.MapPost("signout", SignoutEndpoint.signout)
-            .Produces(StatusCodes.Status204NoContent)
-            .WithDescription(SignoutEndpoint.Description)
-            .RequireAuthorization(AuthPolicies.AllRoles) ;
-
-
-        auth.MapGet("checkauth", CheckauthEndpoint.checkAuth)
+        authAnonymous.MapGet("checkauth", CheckauthEndpoint.checkAuth)
             .Produces<SignedinResponse>()
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription(CheckauthEndpoint.Description)
             .AllowAnonymous();
 
-        auth.MapPost("Roles", CreateRoleEndpoint.CreateRole)
-            .Produces(StatusCodes.Status200OK)
-            .WithDescription(CreateRoleEndpoint.Description)
-            .ProducesValidationProblem();
+        authAllRoles.MapPost("signout", SignoutEndpoint.signout)
+            .Produces(StatusCodes.Status204NoContent)
+            .WithDescription(SignoutEndpoint.Description)
+            .RequireAuthorization(AuthPolicies.AllRoles);
+
 
         return auth;
     }

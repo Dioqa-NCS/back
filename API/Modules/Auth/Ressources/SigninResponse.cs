@@ -2,12 +2,7 @@
 
 namespace API.Modules.Auth.Ressources;
 
-public class SigninRessponse
+public struct SigninRessponse
 {
-    public SigninRessponse(ICollection<string> roles)
-    {
-        Roles = roles;
-    }
-
-    public ICollection<string> Roles { get; set; }
+    public IEnumerable<string> Roles { get; set; }
 }

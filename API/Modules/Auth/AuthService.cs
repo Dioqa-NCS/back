@@ -29,57 +29,46 @@ public class AuthService : IAuthService
 
     public async Task<SigninRessponse?> SignInAsync(Compte user)
     {
+       
         var roles = await _signInManager.UserManager.GetRolesAsync(user);
+
         var claims = CreateClaims(user, roles);
 
         await CreateCookieAuthAsync(claims);
 
         await _signInManager.UserManager.UpdateAsync(user);
 
-        return new SigninRessponse(roles);
+        return new SigninRessponse { Roles = roles };
     }
 
-
+    
 
     public async Task<Compte?> SignupAsync(Compte compte)
     {
-        Compte? userCreate = null;
-        try
-        {
-            await _signInManager.UserManager.CreateAsync(compte, compte.Mdp);
-            userCreate = await _signInManager.UserManager.FindByEmailAsync(compte.UserName);
+       await _signInManager.UserManager.CreateAsync(compte, compte.Mdp);
 
-            if(userCreate == null)
-            {
-                return null;
-            }
+        var userCreate = await _signInManager.UserManager.FindByEmailAsync(compte.UserName);
 
-            await _signInManager.UserManager.AddToRoleAsync(userCreate, AuthRole.Customer);
-            return userCreate;
-        }
-        catch(Exception ex)
-        {
-            if(userCreate is not null)
-            {
-                await _signInManager.UserManager.DeleteAsync(userCreate);
-            }
+        await _signInManager.UserManager.AddToRoleAsync(userCreate, AuthRole.Customer);
 
-            throw new Exception(ex.Message, ex);
-        }
+        return userCreate;
     }
 
 
     private async Task CreateCookieAuthAsync(List<Claim> claims)
     {
-        var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
+        var identity = new ClaimsIdentity(
+            CookieAuthenticationDefaults.AuthenticationScheme, 
+            ClaimTypes.Name, 
+            ClaimTypes.Role
+            );
+        
         identity.AddClaims(claims);
-        var principal = new ClaimsPrincipal(identity);
-
 
         await _httpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            principal,
-            new AuthenticationProperties
+            scheme: CookieAuthenticationDefaults.AuthenticationScheme,
+            principal: new ClaimsPrincipal(identity),
+            properties: new AuthenticationProperties
             {
                 IsPersistent = true,
                 AllowRefresh = true,
@@ -88,17 +77,14 @@ public class AuthService : IAuthService
     }
 
 
-    private List<Claim> CreateClaims(Compte user, IList<string> roles)
+    private List<Claim> CreateClaims(Compte user, IEnumerable<string> roles)
     {
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
         };
 
-        var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r));
+        var roleClaims = roles.Select(role => new Claim(ClaimTypes.Role, role));
         claims.AddRange(roleClaims);
 
         return claims;

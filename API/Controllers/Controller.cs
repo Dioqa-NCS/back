@@ -22,9 +22,9 @@ public abstract class Controller<TEntity, TEntityResponse, TEntityPatch, TKey> :
 
     private readonly IService<TEntity, TKey> _service;
 
-    private readonly NCSContext _context;
+    public readonly NCSContext Context;
 
-    private readonly IMapper _mapper;
+    public readonly IMapper Mapper;
 
     public Controller( 
         IService<TEntity, TKey> service, 
@@ -33,22 +33,22 @@ public abstract class Controller<TEntity, TEntityResponse, TEntityPatch, TKey> :
         )
     {
         _service = service;
-        _context = context;
-        _mapper = mapper;
+        Context = context;
+        Mapper = mapper;
     }
 
 
     [HttpGet]
     public virtual async Task<ActionResult<TEntityResponse>> GetAll( ODataQueryOptions<TEntityResponse> options )
     {
-        return Ok(await _context.Set<TEntity>().GetQueryAsync( _mapper, options ) );
+        return Ok(await Context.Set<TEntity>().GetQueryAsync( Mapper, options ) );
     }
 
 
     [HttpGet( "{id}" )]
     public async Task<SingleResult<TEntityResponse>> GetById(TKey id, ODataQueryOptions<TEntityResponse> options )
     {
-        var query = await _context.Set<TEntity>().Where( model => model.Id.Equals( id ) ).GetQueryAsync( _mapper, options );
+        var query = await Context.Set<TEntity>().Where( model => model.Id.Equals( id ) ).GetQueryAsync( Mapper, options );
 
         return SingleResult.Create( query );
     }
@@ -78,11 +78,11 @@ public abstract class Controller<TEntity, TEntityResponse, TEntityPatch, TKey> :
             }
         }
 
-        var models = _mapper.Map<IEnumerable<TEntityPatch>, IEnumerable<TEntity>>( modelPatches );
+        var models = Mapper.Map<IEnumerable<TEntityPatch>, IEnumerable<TEntity>>( modelPatches );
 
         models = await _service.UpdateCollectionAsync( models );
 
-        modelPatches = _mapper.Map<IEnumerable<TEntity>, IEnumerable<TEntityPatch>>(models );
+        modelPatches = Mapper.Map<IEnumerable<TEntity>, IEnumerable<TEntityPatch>>(models );
 
         return Ok( modelPatches );
     }

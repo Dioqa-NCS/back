@@ -9,23 +9,23 @@ public class SigninEndpoint
     public static async Task<IResult> signin(
             [FromServices] IAuthService authService,
             [FromServices] UserManager<Compte> userManager,
-            [FromBody] SigninRequest authSigninRequest
+            [FromBody] SigninRequest signinRequest
             )
     {
-        var user = await userManager.FindByEmailAsync(authSigninRequest.Username);
+        var compte = await userManager.FindByEmailAsync(signinRequest.Username);
 
-        if(user == null || !await userManager.CheckPasswordAsync(user, authSigninRequest.Password))
+        if(compte is null || !await userManager.CheckPasswordAsync(compte, signinRequest.Password))
         {
             return Results.Unauthorized();
         }
-
-        if(user.EstValider == "O")
+        
+        if(!compte.IsEnable())
         {
 
             return Results.Conflict(new ErrorMessage(message: "Le compte est désactivé.").GetError());
         }
 
-        var authSigninResponse = await authService.SignInAsync(user);
+        var authSigninResponse = await authService.SignInAsync(compte);
 
         return Results.Ok(authSigninResponse);
     }

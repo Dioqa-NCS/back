@@ -8,11 +8,11 @@ public static class AddRoleToUserEndpoint
 
     public static async Task<IResult> addRoleToUser(
         [FromServices] UserManager<Compte> userManager,
-        string userEmail, 
+        string userName, 
         [FromBody] string roleName
         )
     {
-        var user = userManager.Users.SingleOrDefault(u => u.UserName == userEmail);
+        var user = userManager.Users.SingleOrDefault(u => u.UserName == userName);
 
 
         if(user == null)

@@ -16,12 +16,11 @@ public static class CreateRoleEndpoint
             return Results.BadRequest("Role name should be provided.");
         }
 
-        var newRole = new IdentityRole<int>
-        {
-            Name = roleName
-        };
-
-        var roleResult = await roleManager.CreateAsync(newRole);
+        var roleResult = await roleManager.CreateAsync(
+            role: new IdentityRole<int>
+            {
+                Name = roleName
+            });
 
         if(!roleResult.Succeeded)
         {

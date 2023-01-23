@@ -12,7 +12,7 @@ public class QueryParamsIds<TKey> where TKey : IEquatable<TKey>
 
     public List<TKey> CastListIds()
     {
-        var idsConverToInt = string.Join("", this.Ids)
+        var idsConverToInt = string.Join("", Ids)
             .Trim()
             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Select(id => (TKey)Convert.ChangeType(id, typeof(TKey)))
