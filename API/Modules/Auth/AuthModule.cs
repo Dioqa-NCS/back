@@ -45,9 +45,12 @@ public static class AuthModule
             .AddPolicy(AuthPolicies.Admin, policy =>
                    policy
                         .RequireRole(AuthRole.Admin))
-            .AddPolicy(AuthPolicies.Customer, policy => 
+            .AddPolicy(AuthPolicies.Customer, policy =>
                    policy
-                        .RequireRole(AuthRole.Customer));
+                        .RequireRole(AuthRole.Customer))
+            .AddPolicy(AuthPolicies.AllRoles, policy => 
+                   policy
+                        .RequireRole(AuthRole.Admin, AuthRole.Customer)) ;
 
         builder.Services.AddTransient<IAuthService, AuthService>();
         builder.Services.AddValidatorsFromAssemblyContaining<SignupRequestValidator>(ServiceLifetime.Transient);
@@ -104,8 +107,8 @@ public static class AuthModule
         auth.MapPost("signout", SignoutEndpoint.signout)
             .Produces(StatusCodes.Status204NoContent)
             .WithDescription(SignoutEndpoint.Description)
-            .RequireAuthorization(AuthPolicies.Customer)
-            .RequireAuthorization(AuthPolicies.Admin);
+            .RequireAuthorization(AuthPolicies.AllRoles) ;
+
 
         auth.MapGet("checkauth", CheckauthEndpoint.checkAuth)
             .Produces<SignedinResponse>()

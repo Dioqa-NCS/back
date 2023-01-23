@@ -73,15 +73,14 @@ public class SignupRequestValidator : AbstractValidator<SignupRequest>
             .NotNull();
 
         RuleFor(userSignupRequest => userSignupRequest.MailFacturation)
-            .NotNull()
-            .NotEmpty()
-            .EmailAddress();
+            .EmailAddress()
+            .When(userSignup => !string.IsNullOrEmpty(userSignup.MailFacturation));
 
         RuleFor(userSignup => userSignup.TelFacturation)
             .Length(10)
             .Matches(@"^[0-9]*$")
             .WithMessage("Le telephone de facturation ne doit pas contenir de lettres.")
-            .When(userSignup => !string.IsNullOrEmpty(userSignup.MailFacturation));
+            .When(userSignup => !string.IsNullOrEmpty(userSignup.TelFacturation));
 
         RuleFor(userSignup => userSignup.CodePostalFacturation)
             .Length(5)
