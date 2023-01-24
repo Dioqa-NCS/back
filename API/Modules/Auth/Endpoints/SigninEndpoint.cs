@@ -6,7 +6,7 @@ namespace API.Modules.Auth.Endpoints;
 public class SigninEndpoint
 {
     public const string Description = "Authentification à l'API NCS.";
-    public static async Task<IResult> signin(
+    public static async Task<IResult> Signin(
             [FromServices] IAuthService authService,
             [FromServices] UserManager<Compte> userManager,
             [FromBody] SigninRequest signinRequest

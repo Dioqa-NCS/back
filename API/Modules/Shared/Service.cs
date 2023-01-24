@@ -69,7 +69,11 @@ public abstract class Service<TEntity, TKey> : IService<TEntity, TKey>
         modelsPatched.ToList().ForEach(modelPatched =>
         {
             var model = models.FirstOrDefault(model => Equals(model.Id, modelPatched.Id));
-            model.Set(modelPatched);
+
+            if(model != null)
+            {
+                model.Set(modelPatched);
+            }
         });
 
         this.Repository.UpdateCollection(models);

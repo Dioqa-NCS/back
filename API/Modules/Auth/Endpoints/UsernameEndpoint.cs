@@ -6,7 +6,7 @@ namespace API.Modules.Auth.Endpoints;
 public static class UsernameEndpoint
 {
     public const string Description = "Vérifie si un username existe.";
-    public static async Task<IResult> username(
+    public static async Task<IResult> Username(
             [FromServices] UserManager<Compte> userManager,
             [FromBody] AvailableUsernameRequest usernameRequest
             )

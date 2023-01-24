@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json.Linq;
 
 namespace DAL;
 public class NCSContext : Context
@@ -27,34 +30,34 @@ public class NCSContext : Context
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         var entries = ChangeTracker.Entries();
-        foreach(var entry in entries)
+
+        entries.ToList().ForEach((entry) =>
         {
+
             if(entry.State == EntityState.Modified)
             {
-                entry.References.ToList().ForEach(foreignKeyProperty =>
+                entry.Metadata.GetForeignKeyProperties().ToList().ForEach(propForeignKey =>
                 {
-                    var fkValue = foreignKeyProperty.CurrentValue;
-                    var propertyName = foreignKeyProperty.Metadata.Name;
+                    var prop = entry.Property(propForeignKey.Name);
 
-                    if(fkValue == null)
+                    if(prop.CurrentValue != null)
                     {
-                        entry.Reference(propertyName).IsModified = false;
-                    }
-
-                    if(fkValue != null)
-                    {
-                        if(int.TryParse(fkValue.ToString(), out var value))
+                        if(int.TryParse(prop.CurrentValue.ToString(), out var value))
                         {
                             if(value == 0)
                             {
-                                entry.Reference(propertyName).IsModified = false;
+                                prop.IsModified = false;
                             }
                         }
                     }
-                });
 
+                });
             }
-        }
+
+
+        });
+
+   
 
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }

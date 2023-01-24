@@ -97,30 +97,30 @@ public static class AuthModule
             .WithDescription(CreateRoleEndpoint.Description)
             .ProducesValidationProblem();
 
-        authAnonymous.MapPost("signup", SignupEndpoint.signup)
+        authAnonymous.MapPost("signup", SignupEndpoint.Signup)
             .Produces<SignupResponse>(StatusCodes.Status201Created)
             .ProducesValidationProblem()
             .WithDescription(SignupEndpoint.Description);
 
 
-        authAnonymous.MapPost("username", UsernameEndpoint.username)
+        authAnonymous.MapPost("username", UsernameEndpoint.Username)
             .Produces<AvailableUsernameRequest>()
             .WithDescription(UsernameEndpoint.Description);
 
 
-        authAnonymous.MapPost("signin", SigninEndpoint.signin)
+        authAnonymous.MapPost("signin", SigninEndpoint.Signin)
             .Produces<SigninRessponse>()
             .ProducesProblem(StatusCodes.Status409Conflict)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .WithDescription(SigninEndpoint.Description);
 
-        authAnonymous.MapGet("checkauth", CheckauthEndpoint.checkAuth)
+        authAnonymous.MapGet("checkauth", CheckauthEndpoint.CheckAuth)
             .Produces<SignedinResponse>()
             .ProducesProblem(StatusCodes.Status500InternalServerError)
             .WithDescription(CheckauthEndpoint.Description)
             .AllowAnonymous();
 
-        authAllRoles.MapPost("signout", SignoutEndpoint.signout)
+        authAllRoles.MapPost("signout", SignoutEndpoint.Signout)
             .Produces(StatusCodes.Status204NoContent)
             .WithDescription(SignoutEndpoint.Description)
             .RequireAuthorization(AuthPolicies.AllRoles);
