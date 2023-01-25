@@ -12,7 +12,8 @@ public class SigninEndpoint
             [FromBody] SigninRequest signinRequest
             )
     {
-        var compte = await userManager.FindByEmailAsync(signinRequest.Username);
+        var compte = await userManager
+            .FindByEmailAsync(signinRequest.Username);
 
         if(compte is null || !await userManager.CheckPasswordAsync(compte, signinRequest.Password))
         {

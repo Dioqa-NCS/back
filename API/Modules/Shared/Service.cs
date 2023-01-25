@@ -15,11 +15,11 @@ public abstract class Service<TEntity, TKey> : IService<TEntity, TKey>
     }
 
 
-    public async Task<IEnumerable<TEntity>> ReadAsync() => await this.Repository
+    public async Task<IEnumerable<TEntity>> ReadAsync() => await Repository
     .ReadAsync()
     .ConfigureAwait(false);
 
-    public async Task<TEntity?> ReadAsync(TKey id) => await this.Repository
+    public async Task<TEntity?> ReadAsync(TKey id) => await Repository
         .Where(model => Equals(model.Id, id))
         .FirstOrDefaultAsync()
         .ConfigureAwait(false);
@@ -28,8 +28,7 @@ public abstract class Service<TEntity, TKey> : IService<TEntity, TKey>
     {
         try
         {
-            // your code
-            return await this.Repository.WriteAsync().ConfigureAwait(false);
+            return await Repository.WriteAsync().ConfigureAwait(false);
         }
         catch(DbUpdateException ex)
         {
@@ -47,24 +46,28 @@ public abstract class Service<TEntity, TKey> : IService<TEntity, TKey>
     public async Task<IService<TEntity, TKey>> Update(object id, TEntity modelUpdate)
     {
 
-        var modelToUpdate = await this.Repository.FindAsync(id).ConfigureAwait(false);
+        var modelToUpdate = await Repository.FindAsync(id).ConfigureAwait(false);
+
+        if (modelToUpdate == null)
+        {
+            throw new Exception("The entity to be updated does not exist.");
+        }
 
         modelToUpdate.Set(modelUpdate);
-
-        this.Repository.Update(modelToUpdate);
+        Repository.Update(modelToUpdate);
 
         return this;
     }
 
     public async Task DeleteCollection(IEnumerable<TKey> ids)
     {
-        var models = await this.findAllByIdsAsync(ids);
+        var models = await FindAllByIdsAsync(ids);
         this.Repository.RemoveCollection(models);
     }
 
     public virtual async Task<IEnumerable<TEntity>> UpdateCollectionAsync(IEnumerable<TEntity> modelsPatched)
     {
-        var models = await this.findAllByIdsAsync(modelsPatched.Select(modelPatched => modelPatched.Id));
+        var models = await FindAllByIdsAsync(modelsPatched.Select(modelPatched => modelPatched.Id));
 
         modelsPatched.ToList().ForEach(modelPatched =>
         {
@@ -76,17 +79,19 @@ public abstract class Service<TEntity, TKey> : IService<TEntity, TKey>
             }
         });
 
-        this.Repository.UpdateCollection(models);
+        Repository.UpdateCollection(models);
 
-        await this.WriteAsync();
+        await WriteAsync();
 
-        models = await this.findAllByIdsAsync(modelsPatched.Select(modelPatched => modelPatched.Id));
+
+
+        models = await FindAllByIdsAsync(modelsPatched.Select(modelPatched => modelPatched.Id));
         return models;
     }
 
-    protected async Task<IEnumerable<TEntity>> findAllByIdsAsync(IEnumerable<TKey> ids)
+    protected async Task<IEnumerable<TEntity>> FindAllByIdsAsync(IEnumerable<TKey> ids)
     {
-        var models = await this.Repository
+        var models = await Repository
             .Where(model => ids.Contains(model.Id))
             .ReadAsync()
             .ConfigureAwait(false);

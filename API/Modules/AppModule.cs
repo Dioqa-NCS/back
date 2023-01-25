@@ -1,5 +1,6 @@
 ﻿using API.Modules.Adresses;
 using API.Modules.Auth;
+using API.Modules.Claims;
 using API.Modules.Comptes;
 using API.Modules.Shared;
 using API.Modules.Swagger;
@@ -51,6 +52,8 @@ public static class AppModule
         builder.RegisterSharedeModule();
         
         builder.RegisterTypeentrepriseModule();
+
+        builder.RegisterClaimModule();
 
         return builder;
     }
